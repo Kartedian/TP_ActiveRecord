@@ -16,7 +16,7 @@ class DBConnectionTest {
         Connection connection = instance.getConnect();
         assertNull(connection);
 
-        instance.setDbName("testpersonne");
+        instance.setBDName("testpersonne");
 
         connection = instance.getConnect();
 
@@ -34,7 +34,7 @@ class DBConnectionTest {
 
         assertNotNull(connection);
 
-        instance.setDbName("test");
+        instance.setBDName("test");
         Connection connection2 = instance.getConnect();
 
         assertNotEquals(connection, connection2);
