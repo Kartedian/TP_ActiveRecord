@@ -15,18 +15,18 @@ public class DBConnection {
     private static String userName;
     //mot de passe pour accéder
     private static String password;
-    //nom ou IP pour atteindre notre système de BDD
+    //nom ou IP pour atteindre notre système de BD
     private static String serverName;
     //le port sur lequel il est hébergé
     private static String portNumber;
     //instance
     private static DBConnection instance;
 
-    //nom de la BDD à laquelle on veut accéder
+    //nom de la BD à laquelle on veut accéder
     private String nameDB;
     //url avec laquelle nous accéderons au système
     private String urlDB;
-    //objet que nous utiliserons pour atteindre la BDD et communiquer avec elle
+    //objet que nous utiliserons pour atteindre la BD et communiquer avec elle
     private Connection connect;
 
     /**
@@ -50,7 +50,7 @@ public class DBConnection {
 
     /**
      * Méthode qui utilise un fichier, passé en paramètre, pour extraire les données d'accès au système de gestion
-     * de BDD.
+     * de BD.
      *
      * @param file
      */
@@ -70,7 +70,7 @@ public class DBConnection {
     }
 
     /**
-     * Méthode qui crée la connexion avec notre BDD si elle n'existe pas, sinon renvoie celle déjà existante.
+     * Méthode qui crée la connexion avec notre BD si elle n'existe pas, sinon renvoie celle déjà existante.
      *
      * @return
      */
@@ -96,7 +96,7 @@ public class DBConnection {
     }
 
     /**
-     * Méthode set pour le nom de la BDD à laquelle on voudrait accéder.
+     * Méthode set pour le nom de la BD à laquelle on voudrait accéder.
      *
      * @param dbName
      */
