@@ -104,4 +104,13 @@ public class DBConnection {
         nameDB=dbName;
         connect=null;
     }
+
+    /**
+     * Méthode get pour retourne le nom de la BD.
+     *
+     * @return
+     */
+    public String getNameBD(){
+        return nameDB;
+    }
 }
