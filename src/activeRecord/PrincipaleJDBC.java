@@ -1,12 +1,10 @@
 package activeRecord;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
 public class PrincipaleJDBC {
 
@@ -40,9 +38,9 @@ public class PrincipaleJDBC {
             //Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net/testpersonne","scruzlara", "root2014");
             // creation de la table Personne
 
-            DBCConnection.setConfig("./config/config.ini");
-            DBCConnection instance = DBCConnection.getInstance();
-            instance.setDbName("testpersonne");
+            DBConnection.setConfig("./config/config.ini");
+            DBConnection instance = DBConnection.getInstance();
+            instance.setBDName("testpersonne");
             Connection connect = instance.getConnect();
 
             String createString = "CREATE TABLE Personne ( "
