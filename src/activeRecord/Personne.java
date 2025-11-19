@@ -28,7 +28,7 @@ public class Personne {
     }
 
     public static ArrayList<Personne> findAll() throws Exception {
-        if(Personne.dbConnection.getNameDB().equals("testpersonne")){
+        if(Personne.dbConnection.getNameBD().equals("testpersonne")){
             Connection connection =  dbConnection.getConnect();
             ArrayList<Personne> personnes = new ArrayList<Personne>();
 
@@ -45,7 +45,7 @@ public class Personne {
     }
 
     public static Personne findById(int id) throws Exception {
-        if(Personne.dbConnection.getNameDB().equals("testpersonne")){
+        if(Personne.dbConnection.getNameBD().equals("testpersonne")){
             Connection connection =  dbConnection.getConnect();
 
             String query = "SELECT * FROM personne WHERE id = ?;";
@@ -64,7 +64,7 @@ public class Personne {
     }
 
     public static ArrayList<Personne> findByName(String nom) throws Exception {
-        if(Personne.dbConnection.getNameDB().equals("testpersonne")){
+        if(Personne.dbConnection.getNameBD().equals("testpersonne")){
             Connection connection =  dbConnection.getConnect();
             ArrayList<Personne> personnes = new ArrayList<Personne>();
 
