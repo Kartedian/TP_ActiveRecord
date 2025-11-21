@@ -80,8 +80,51 @@ public class Personne {
                 return null;
             else
                 return personnes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        throw new Exception("c'est pas la bon BD.");
+
+    }
+
+    public static void createTable(){
+        Connection connection = dbConnection.getConnect();
+        try{
+            String createString = "CREATE TABLE Personne ( "
+                    + "ID INTEGER  AUTO_INCREMENT, " + "NOM varchar(40) NOT NULL, "
+                    + "PRENOM varchar(40) NOT NULL, " + "PRIMARY KEY (ID))";
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(createString);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void deleteTable(){
+        Connection connection = dbConnection.getConnect();
+        try{
+            String createString = "DROP TABLE Personne";
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(createString);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void delete(){
+        if(this.id!=(-1)){
+            try{
+                Connection connection = dbConnection.getConnect();
+
+                String query = "DELETE FROM Personne where nom = ? and prenom = ?";
+                PreparedStatement sql = connection.prepareStatement(query);
+                sql.setString(1, this.nom);
+                sql.setString(2, this.prenom);
+                sql.execute();
+                this.id=-1;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void save(){
