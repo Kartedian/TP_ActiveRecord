@@ -40,7 +40,7 @@ public class PrincipaleJDBC {
 
             DBConnection.setConfig("./config/config.ini");
             DBConnection instance = DBConnection.getInstance();
-            instance.setBDName("testpersonne");
+            instance.setNomDB("testpersonne");
             Connection connect = instance.getConnect();
 
             String createString = "CREATE TABLE Personne ( "
