@@ -143,4 +143,21 @@ public class Film {
             throw new RuntimeException(e);
         }
     }
+
+    public void delete(){
+        if(this.id!=(-1)){
+            try{
+                Connection connection = dbConnection.getConnect();
+
+                String query = "DELETE FROM Film where titre = ? and id_rea = ?";
+                PreparedStatement sql = connection.prepareStatement(query);
+                sql.setString(1, this.titre);
+                sql.setInt(2, this.id_real);
+                sql.execute();
+                this.id=-1;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
