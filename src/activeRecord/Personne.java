@@ -83,4 +83,48 @@ public class Personne {
         }
         throw new Exception("c'est pas la bon BD.");
     }
+
+    public void save(){
+        if (this.id == -1) {
+            this.saveNew();
+        }
+        else{
+            this.update();
+        }
+    }
+
+    private void saveNew(){
+        try {
+            Connection connection = dbConnection.getConnect();
+            PreparedStatement sql;
+
+            String query = "INSERT INTO Personne (nom, prenom) VALUES (?,?);";
+
+            sql = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            sql.setString(1, this.nom);
+            sql.setString(2, this.prenom);
+
+            sql.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void update(){
+        try {
+            Connection connection = dbConnection.getConnect();
+            PreparedStatement sql;
+
+            String query = "update Personne set nom = ?, prenom = ? where id = ? ;";
+
+            sql = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            sql.setString(1, this.nom);
+            sql.setString(2, this.prenom);
+            sql.setInt(3, this.id);
+
+            sql.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
