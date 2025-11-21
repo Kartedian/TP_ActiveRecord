@@ -86,7 +86,7 @@ public class Personne {
         }
     }
 
-    public static ArrayList<Personne> findByName(String nom) throws Exception {
+    public static ArrayList<Personne> findByName(String nom){
         try{
             Connection connection =  dbConnection.getConnect();
             ArrayList<Personne> personnes = new ArrayList<Personne>();
