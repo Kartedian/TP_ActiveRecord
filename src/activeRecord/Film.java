@@ -1,10 +1,14 @@
 package activeRecord;
 
+import java.sql.*;
+
 public class Film {
 
     private String titre;
     private int id;
     private int id_real;
+
+    private static final DBConnection dbConnection = DBConnection.getInstance();
 
     public Film(String titre, Personne personne){
         this.titre = titre;
@@ -16,6 +20,22 @@ public class Film {
         this.titre = titre;
         this.id = id;
         this.id_real = id_real;
+    }
+
+    public String getTitre(){
+        return this.titre;
+    }
+
+    public int getId(){
+        return this.id;
+    }
+
+    public int getId_real(){
+        return this.id_real;
+    }
+
+    public void setTitre(String titre){
+        this.titre = titre;
     }
 
     public static Film findById(int id){
