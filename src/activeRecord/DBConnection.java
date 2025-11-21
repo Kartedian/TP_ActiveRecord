@@ -100,7 +100,7 @@ public class DBConnection {
      *
      * @param dbName
      */
-    public void setBDName(String dbName){
+    public void setNomDB(String dbName){
         nameDB=dbName;
         connect=null;
     }
@@ -110,7 +110,7 @@ public class DBConnection {
      *
      * @return
      */
-    public String getNameBD(){
+    public String getNomDB(){
         return nameDB;
     }
 }
