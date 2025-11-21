@@ -25,6 +25,10 @@ public class Personne {
         this.prenom = prenom;
     }
 
+    public int getId(){
+        return id;
+    }
+
     public static ArrayList<Personne> findAll() throws Exception {
         try{
             Connection connection =  dbConnection.getConnect();
