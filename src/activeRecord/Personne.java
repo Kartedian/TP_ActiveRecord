@@ -66,7 +66,7 @@ public class Personne {
         }
     }
 
-    public static Personne findById(int id) throws Exception {
+    public static Personne findById(int id){
         try{
             Connection connection =  dbConnection.getConnect();
 
