@@ -29,7 +29,23 @@ public class Personne {
         return id;
     }
 
-    public static ArrayList<Personne> findAll() throws Exception {
+    public String getNom(){
+        return this.nom;
+    }
+
+    public String getPrenom(){
+        return this.prenom;
+    }
+
+    public void setNom(String nom){
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom){
+        this.prenom = prenom;
+    }
+
+    public static ArrayList<Personne> findAll(){
         try{
             Connection connection =  dbConnection.getConnect();
             ArrayList<Personne> personnes = new ArrayList<Personne>();
