@@ -93,4 +93,54 @@ public class Film {
             throw new RuntimeException(e);
         }
     }
+
+    public void save(){
+        try {
+            if (this.id_real != -1)
+                if (this.id == -1) {
+                    this.saveNew();
+                } else {
+                    this.update();
+                }
+            else
+                throw new RealisateurAbsentException();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void saveNew(){
+        try {
+            Connection connection = dbConnection.getConnect();
+            PreparedStatement sql;
+
+            String query = "INSERT INTO Film (titre, id_rea) VALUES (?,?);";
+
+            sql = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            sql.setString(1, this.titre);
+            sql.setInt(2, this.id_real);
+
+            sql.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void update(){
+        try {
+            Connection connection = dbConnection.getConnect();
+            PreparedStatement sql;
+
+            String query = "update Film set titre = ?, id_rea = ? where id = ? ;";
+
+            sql = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            sql.setString(1, this.titre);
+            sql.setInt(2, this.id_real);
+            sql.setInt(3, this.id);
+
+            sql.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
