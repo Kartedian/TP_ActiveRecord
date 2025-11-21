@@ -155,6 +155,17 @@ public class Personne {
             sql.setString(2, this.prenom);
 
             sql.execute();
+
+            query = "SELECT id FROM Personne where nom = ? and prenom = ?";
+            sql = connection.prepareStatement(query);
+            sql.setString(1, this.nom);
+            sql.setString(2, this.prenom);
+            sql.execute();
+            ResultSet rs = sql.getResultSet();
+
+            if(rs.next()){
+                this.id = rs.getInt("id");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
