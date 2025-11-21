@@ -73,7 +73,7 @@ public class Film {
             String createString = "CREATE TABLE Film (" +
                     " ID INTEGER AUTO_INCREMENT, "+
                     " TITRE varchar(40) NOT NULL, " +
-                    " ID_REA int(11) DEFAULT NULL" +
+                    " ID_REA int(11) NOT NULL, " +
                     " PRIMARY KEY (ID), " +
                     " FOREIGN KEY (ID_REA) REFERENCES Personne(ID))";
             Statement stmt = connection.createStatement();
