@@ -160,4 +160,28 @@ public class Film {
             }
         }
     }
+
+    public static ArrayList<Film> findByRealisateur(Personne p){
+        try{
+            Connection connection = dbConnection.getConnect();
+            ArrayList<Film> films = new ArrayList<Film>();
+
+            String requete = "SELECT * FROM Film WHERE id_rea = ?";
+
+            PreparedStatement sql = connection.prepareStatement(requete);
+            sql.setInt(1, p.getId());
+            sql.execute();
+            ResultSet rs = sql.getResultSet();
+
+            while(rs.next()){
+                films.add(new Film(rs.getString("titre"), rs.getInt("id"), rs.getInt("id_rea")));
+            }
+            if(films.isEmpty()){
+                return null;
+            }
+            return films;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
