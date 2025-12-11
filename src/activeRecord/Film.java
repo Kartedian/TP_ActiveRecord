@@ -3,25 +3,48 @@ package activeRecord;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Classe représentant un tuple de la table Film selon le patron Active Record.
+ * Un film est caractérisé par un titre et un réalisateur (clé étrangère).
+ */
 public class Film {
 
     private String titre;
     private int id;
+    /**
+     * Identifiant du réalisateur (clé étrangère vers la table Personne).
+     */
     private int id_real;
 
     private static final DBConnection dbConnection = DBConnection.getInstance();
 
+    /**
+     * Constructeur public pour créer un Film à partir d'un titre et d'un objet Personne (réalisateur).
+     * L'attribut id est initialisé à -1.
+     *
+     * @param titre    Le titre du film
+     * @param personne L'objet Personne représentant le réalisateur (dont on extrait l'id)
+     */
     public Film(String titre, Personne personne){
         this.titre = titre;
         this.id_real = personne.getId();
         this.id = -1;
     }
 
+    /**
+     * Constructeur privé pour reconstruire un objet Film à partir des résultats d'une requête SQL.
+     *
+     * @param titre   Le titre du film
+     * @param id      L'identifiant du film
+     * @param id_real L'identifiant du réalisateur
+     */
     private Film(String titre, int id, int id_real){
         this.titre = titre;
         this.id = id;
         this.id_real = id_real;
     }
+
+    // Getters et Setters
 
     public String getTitre(){
         return this.titre;
@@ -39,6 +62,12 @@ public class Film {
         this.titre = titre;
     }
 
+    /**
+     * Retourne l'objet Film correspondant au tuple avec l'id passé en paramètre.
+     *
+     * @param id L'identifiant du film
+     * @return L'objet Film trouvé ou null.
+     */
     public static Film findById(int id){
         try{
             Connection connection = dbConnection.getConnect();
@@ -52,6 +81,7 @@ public class Film {
             ResultSet rs = sql.getResultSet();
 
             if(rs.next()){
+                // Note : il y a une potentielle erreur de typo "id_rea" vs "id_real" dans le code original, conservée ici.
                 return new Film(rs.getString("titre"), rs.getInt("id"), rs.getInt("id_rea"));
             }
         } catch (SQLException e) {
@@ -60,6 +90,12 @@ public class Film {
         return null;
     }
 
+    /**
+     * Retourne l'objet Personne correspondant au réalisateur du film.
+     * Utilise l'Active Record Personne et l'attribut id_real.
+     *
+     * @return L'objet Personne réalisateur
+     */
     public Personne getRealisateur(){
         try {
             return Personne.findById(this.id_real);
@@ -68,6 +104,9 @@ public class Film {
         }
     }
 
+    /**
+     * Crée la table Film avec une clé étrangère référençant la table Personne.
+     */
     public static void createTable(){
         Connection connection = dbConnection.getConnect();
         try{
@@ -84,6 +123,9 @@ public class Film {
         }
     }
 
+    /**
+     * Supprime la table Film de la base de données.
+     */
     public static void deleteTable(){
         Connection connection = dbConnection.getConnect();
         try{
@@ -95,6 +137,11 @@ public class Film {
         }
     }
 
+    /**
+     * Sauvegarde le film dans la base.
+     * Si la clé étrangère id_real vaut -1 (réalisateur non sauvegardé), lève une exception.
+     * Sinon, effectue une insertion (si id=-1) ou une mise à jour.
+     */
     public void save(){
         try {
             if (this.id_real != -1)
@@ -110,6 +157,9 @@ public class Film {
         }
     }
 
+    /**
+     * Insère un nouveau film dans la base.
+     */
     private void saveNew(){
         try {
             Connection connection = dbConnection.getConnect();
@@ -122,11 +172,15 @@ public class Film {
             sql.setInt(2, this.id_real);
 
             sql.execute();
+            // Note: Le code original ne met pas à jour this.id après l'insertion ici.
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Met à jour les informations du film existant.
+     */
     private void update(){
         try {
             Connection connection = dbConnection.getConnect();
@@ -145,6 +199,9 @@ public class Film {
         }
     }
 
+    /**
+     * Supprime le film de la base et remet son id à -1.
+     */
     public void delete(){
         if(this.id!=(-1)){
             try{
@@ -162,6 +219,12 @@ public class Film {
         }
     }
 
+    /**
+     * Retourne l'ensemble des films réalisés par la personne passée en paramètre.
+     *
+     * @param p La personne (réalisateur)
+     * @return Une liste de films ou null.
+     */
     public static ArrayList<Film> findByRealisateur(Personne p){
         try{
             Connection connection = dbConnection.getConnect();

@@ -3,27 +3,52 @@ package activeRecord;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Classe représentant un tuple de la table personne selon le patron Active Record.
+ * Elle permet de gérer les données d'une personne (nom, prénom) et d'interagir avec la base de données.
+ */
 public class Personne {
 
+    /**
+     * Identifiant unique de la personne dans la base de données.
+     * Vaut -1 si la personne n'est pas encore enregistrée dans la base.
+     */
     private int id;
 
     private String nom;
 
     private String prenom;
 
+    // Instance unique de la connexion à la base de données (Singleton)
     private static final DBConnection dbConnection = DBConnection.getInstance();
 
+    /**
+     * Constructeur public pour créer une nouvelle Personne dans l'application.
+     * L'identifiant est initialisé à -1 car la personne n'existe pas encore en base.
+     *
+     * @param nom    Le nom de la personne
+     * @param prenom Le prénom de la personne
+     */
     public  Personne(String nom, String prenom) {
         this.id = -1;
         this.nom = nom;
         this.prenom = prenom;
     }
 
+    /**
+     * Constructeur privé utilisé pour recréer un objet Personne à partir d'un tuple existant dans la base de données.
+     *
+     * @param id     L'identifiant récupéré de la base
+     * @param nom    Le nom récupéré de la base
+     * @param prenom Le prénom récupéré de la base
+     */
     private Personne(int id, String nom, String prenom) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
     }
+
+    // Getters et Setters standards
 
     public int getId(){
         return id;
@@ -45,6 +70,11 @@ public class Personne {
         this.prenom = prenom;
     }
 
+    /**
+     * Récupère l'ensemble des tuples de la table personne sous forme d'objets.
+     *
+     * @return Une ArrayList contenant toutes les personnes, ou null si la table est vide.
+     */
     public static ArrayList<Personne> findAll(){
         try{
             Connection connection =  dbConnection.getConnect();
@@ -66,6 +96,12 @@ public class Personne {
         }
     }
 
+    /**
+     * Recherche et retourne l'objet Personne correspondant au tuple ayant l'id passé en paramètre.
+     *
+     * @param id L'identifiant de la personne à rechercher
+     * @return L'objet Personne correspondant, ou null si l'objet n'existe pas.
+     */
     public static Personne findById(int id){
         try{
             Connection connection =  dbConnection.getConnect();
@@ -86,6 +122,12 @@ public class Personne {
         }
     }
 
+    /**
+     * Retourne la liste des objets Personne correspondant aux tuples dont le nom est passé en paramètre.
+     *
+     * @param nom Le nom à rechercher
+     * @return Une liste de personnes portant ce nom, ou null si aucune correspondance.
+     */
     public static ArrayList<Personne> findByName(String nom){
         try{
             Connection connection =  dbConnection.getConnect();
@@ -109,6 +151,9 @@ public class Personne {
 
     }
 
+    /**
+     * Crée la table Personne dans la base de données.
+     */
     public static void createTable(){
         Connection connection = dbConnection.getConnect();
         try{
@@ -122,6 +167,9 @@ public class Personne {
         }
     }
 
+    /**
+     * Supprime la table Personne de la base de données.
+     */
     public static void deleteTable(){
         Connection connection = dbConnection.getConnect();
         try{
@@ -133,6 +181,10 @@ public class Personne {
         }
     }
 
+    /**
+     * Supprime la personne actuelle de la base de données.
+     * Après suppression, l'attribut id est remis à -1 car l'objet n'est plus présent dans la table.
+     */
     public void delete(){
         if(this.id!=(-1)){
             try{
@@ -150,6 +202,11 @@ public class Personne {
         }
     }
 
+    /**
+     * Sauvegarde l'objet Personne dans la table.
+     * Si l'id vaut -1, cela effectue une insertion (nouvelle personne).
+     * Si l'id est différent de -1, cela effectue une mise à jour du tuple existant.
+     */
     public void save(){
         if (this.id == -1) {
             this.saveNew();
@@ -159,6 +216,10 @@ public class Personne {
         }
     }
 
+    /**
+     * Méthode privée pour insérer un nouveau tuple dans la base.
+     * Met à jour l'attribut id avec la clé générée par l'auto-incrément.
+     */
     private void saveNew(){
         try {
             Connection connection = dbConnection.getConnect();
@@ -172,6 +233,7 @@ public class Personne {
 
             sql.execute();
 
+            // Récupération de l'ID généré (bien que la requête suivante fasse un select explicite)
             query = "SELECT id FROM Personne where nom = ? and prenom = ?";
             sql = connection.prepareStatement(query);
             sql.setString(1, this.nom);
@@ -187,6 +249,9 @@ public class Personne {
         }
     }
 
+    /**
+     * Méthode privée pour mettre à jour un tuple existant dans la base.
+     */
     private void update(){
         try {
             Connection connection = dbConnection.getConnect();
